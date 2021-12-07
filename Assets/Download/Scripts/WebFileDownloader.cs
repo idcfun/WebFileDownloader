@@ -16,8 +16,8 @@ namespace GTK.Download
         public static List<WebFileDownloader> Downloaders = new List<WebFileDownloader>();
         public static WebFileDownloader StartDownload(string url, string directory, short threadCount)
         {
-            WebFileDownloader d = new WebFileDownloader(directory, threadCount);
-            d.Download(url);
+            WebFileDownloader d = new WebFileDownloader(url, directory, threadCount);
+            d.Start();
             Downloaders.Add(d);
             return d;
         }
@@ -41,8 +41,9 @@ namespace GTK.Download
         private WebFile webFile;
         private FileStream stream;
         private string downloadDirectory;
-        public WebFileDownloader(string directory,short downloadThreadCount = 2)
+        public WebFileDownloader(string url,string directory,short downloadThreadCount = 2)
         {
+            this.url = url;
             this.downloadDirectory = directory;
             this.downloadThreadCount = downloadThreadCount;
             webFile = new WebFile();
@@ -75,8 +76,17 @@ namespace GTK.Download
             return blocks[index].Progress;
         }
 
+        public void Start()
+        {
+            running = true;
+            Thread t = new Thread(Run);
+            t.Start();
+        }
+
         private void Run()
         {
+            Download(this.url);
+
             while (running && Progress < 1)
             {
                 Thread.Sleep(5);
@@ -206,10 +216,6 @@ namespace GTK.Download
                     offset += blockSize;
                 }
             }
-
-            running = true;
-            Thread t = new Thread(Run);
-            t.Start();
         }
 
         private long GetTotalSize(Uri uri)

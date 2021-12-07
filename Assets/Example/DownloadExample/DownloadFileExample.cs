@@ -19,7 +19,7 @@ public class DownloadFileExample : MonoBehaviour {
         startTime = Time.time;
         for(int i = 0; i < urls.Length; i++)
         {
-            WebFileDownloader.StartDownload(urls[i],"D:/", 1);
+            WebFileDownloader.StartDownload(urls[i],"D:/", 3);
         }
     }
 
