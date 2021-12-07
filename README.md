@@ -1,6 +1,6 @@
 # WebFileDownloader
 Unity web file downloader based on http protocol
-WebFileDownloader StartDownload(string url, string directory, short threadCount)
+# WebFileDownloader StartDownload(string url, string directory, short threadCount)
 一键下载方便使用，支持多线程下载。
 
 简单的检擦界面，方便快捷的看到加载的进度
